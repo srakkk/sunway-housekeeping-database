@@ -3,6 +3,7 @@ This repository contains the SQL query scripts for the Sunway Housekeeping Servi
 It was developed as part of a database fundamentals course to demonstrate the design of a database schema and the execution of SQL queries for data manipulation and retrieval.
 
 Queries used to retrive specific information:
+
 Q.1 From the tables SUNWAY HOUSEKEEPING wants to know some details about the services provided for their monthly evaluation.Write a user query and return service ID, service date, house ID, and also the service name and order by the house_id.
 ![image](https://github.com/srakkk/sunway-housekeeping-database/assets/113534068/4751763b-d1e7-44b5-8bdf-8d7d67a8b699)
 
