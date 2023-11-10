@@ -1,0 +1,325 @@
+CLEAR SCREEN
+
+
+REM *************************
+REM DROP TABLES
+REM *************************
+DROP TABLE customerxx Cascade Constraints;
+DROP TABLE appointment Cascade Constraints;
+DROP TABLE services_provided Cascade Constraints;
+DROP TABLE service_details Cascade Constraints;
+DROP TABLE house Cascade Constraints;
+DROP TABLE equipment Cascade Constraints;
+DROP TABLE employee Cascade Constraints;
+DROP TABLE employee_commissions Cascade Constraints;
+
+REM *************************
+REM CREATE TABLES
+REM *************************
+CREATE TABLE customerxx	
+(   cust_id  NUMBER(6) PRIMARY KEY,
+	f_name VARCHAR2(50) NOT NULL,
+	l_name VARCHAR2(50) NOT NULL,
+	gender VARCHAR(6) NOT NULL,
+    ph_no VARCHAR(30));
+
+
+CREATE TABLE appointment 
+(   ap_id NUMBER(6) PRIMARY KEY,
+    date_of_appointment DATE,
+    date_of_service DATE,
+    cust_id NUMBER(6) NOT NULL,
+    FOREIGN KEY (cust_id) REFERENCES customerxx(cust_id)
+    
+    );
+
+CREATE TABLE services_provided 
+(	service_id NUMBER(6) PRIMARY KEY,
+	service_name VARCHAR(50) NOT NULL,
+	price_range VARCHAR(6) NOT NULL
+	
+    );
+
+CREATE TABLE employee
+(   emp_id NUMBER(6) PRIMARY KEY,
+    f_name VARCHAR2(50) NOT NULL,
+    l_name VARCHAR2(50) NOT NULL,
+    gender VARCHAR(6) NOT NULL,
+    ph_no VARCHAR(30),
+    street VARCHAR(60) NOT NULL,
+    city VARCHAR(30) NOT NULL,
+    town VARCHAR(30),
+    state VARCHAR(30) NOT NULL,
+    post_code NUMBER(10) NOT NULL,
+    salary DECIMAL(10,2) NOT NULL,
+    rate_of_commission NUMBER
+    ); 
+
+CREATE TABLE house 
+(   house_id NUMBER(6) PRIMARY KEY,
+    description CHAR(2) NOT NULL,
+    street VARCHAR(60) NOT NULL ,
+    city VARCHAR(30) NOT NULL ,
+    town VARCHAR(30),
+    state VARCHAR(30) NOT NULL ,
+    post_code NUMBER(10) NOT NULL,
+    type_code NUMBER(10),
+    cust_id NUMBER(6) NOT NULL,
+    FOREIGN KEY (cust_id) REFERENCES customerxx(cust_id)
+    );     
+
+CREATE TABLE equipment    
+(   eqp_id NUMBER(6) PRIMARY KEY,
+    eqp_name VARCHAR(50) NOT NULL,
+    quantity NUMBER NOT NULL,
+    service_id NUMBER(6) NOT NULL,
+    FOREIGN KEY (service_id) REFERENCES services_provided(service_id)
+    
+     ); 
+
+CREATE TABLE service_details (
+    CONSTRAINT PK_service_details PRIMARY KEY (service_det_id, service_id),
+    service_det_id NUMBER(6),
+    service_id NUMBER(6),
+    date_of_service DATE NOT NULL,
+    house_id NUMBER(6) NOT NULL,
+    emp_ID NUMBER(6) NOT NULL,
+    FOREIGN KEY (service_id) REFERENCES services_provided(service_id),
+    FOREIGN KEY (house_id) REFERENCES house(house_id),
+    FOREIGN KEY (emp_id) REFERENCES employee(emp_id)
+    ); 
+
+CREATE TABLE employee_commissions (
+    CONSTRAINT PK_employee_commissions PRIMARY KEY (emp_id, hours_of_service),
+    emp_id NUMBER (6),
+    hours_of_service NUMBER,
+    commission NUMBER(7,2),
+    FOREIGN KEY (emp_id) REFERENCES employee(emp_id)
+);
+
+
+REM *************************
+REM INSERT customerxx RECORDS
+REM *************************
+INSERT INTO customerxx VALUES (101, 'Shane', 'Smith', 'Male', '116 296 7102');
+INSERT INTO customerxx VALUES (102, 'Sopihie', 'Marie', 'Female', '532 935 9492');
+INSERT INTO customerxx VALUES (103, 'Tracey', 'Troy', 'Female', '950 231 0056');
+INSERT INTO customerxx VALUES (104, 'Garnet', 'Garie', 'Female', '410 609 5377');
+INSERT INTO customerxx VALUES (105, 'Julio', 'Bozier', 'Male', '455 298 5356');
+INSERT INTO customerxx VALUES (106, 'Nadia', 'Blundan', 'Female', '305 613 2903');
+INSERT INTO customerxx VALUES (107, 'Mike', 'Gold', 'Male', '448 230 9866');
+INSERT INTO customerxx VALUES (108, 'Alix', 'Canizares', 'Female', '724 703 0967');
+INSERT INTO customerxx VALUES (109, 'Chicky', 'Betteney', 'Female', '935 109 8285');
+INSERT INTO customerxx VALUES (110, 'Hazel', 'Walks', 'Male', '293 901 8415');
+INSERT INTO customerxx VALUES (111, 'Gwen', 'Stacey', 'Female', '232 731 5732');
+INSERT INTO customerxx VALUES (112, 'Darla', 'Hart', 'Female', '720 320 1135');
+INSERT INTO customerxx VALUES (113, 'Drucy', 'Buzine', 'Female', '298 381 4662');
+INSERT INTO customerxx VALUES (114, 'Cherice', 'Dockray', 'Female', '893 267 6734');
+INSERT INTO customerxx VALUES (115, 'Ruby', 'Plevey', 'Male', '621 602 8242');
+INSERT INTO customerxx VALUES (116, 'Roxine', 'Olivet', 'Female', '372 327 1356');
+INSERT INTO customerxx VALUES (117, 'Forster', 'Colicot', 'Male', '798 681 0548');
+INSERT INTO customerxx VALUES (118, 'Albert', 'Heggie', 'Male', '411 409 6095');
+INSERT INTO customerxx VALUES (119, 'Bird', 'Skeldon', 'Female', '752 917 0828');
+INSERT INTO customerxx VALUES (120, 'Teena', 'Patshull', 'Female', '212 811 9115');
+
+
+REM *************************
+REM INSERT services_provided RECORDS
+REM *************************
+INSERT INTO services_provided VALUES (201, 'vacuuming', 'medium' );
+INSERT INTO services_provided VALUES (202, 'furniture cleaning', 'low' );
+INSERT INTO services_provided VALUES (203, 'rubbish disposal', 'low' );
+INSERT INTO services_provided VALUES (204, 'dish care', 'low' );
+INSERT INTO services_provided VALUES (205, 'bed care', 'high' );
+INSERT INTO services_provided VALUES (206, 'laundry', 'high' );
+INSERT INTO services_provided VALUES (207, 'ironing', 'medium' );
+INSERT INTO services_provided VALUES (208, 'mopping', 'medium' );
+INSERT INTO services_provided VALUES (209, 'disinfection', 'high' );
+
+
+REM *************************
+REM INSERT appointment RECORDS
+REM *************************
+INSERT INTO appointment VALUES (41, '05-NOV-2022', '07-NOV-2022' , 101);
+INSERT INTO appointment VALUES (42, '07-NOV-2022', '09-NOV-2022' , 112);
+INSERT INTO appointment VALUES (43, '11-NOV-2022', '13-NOV-2022' , 113);
+INSERT INTO appointment VALUES (44, '14-NOV-2022', '16-NOV-2022' , 114);
+INSERT INTO appointment VALUES (45, '16-NOV-2022', '18-NOV-2022' , 115);
+INSERT INTO appointment VALUES (46, '18-NOV-2022', '20-NOV-2022' , 107);
+INSERT INTO appointment VALUES (47, '21-NOV-2022', '23-NOV-2022' , 119);
+INSERT INTO appointment VALUES (48, '23-NOV-2022', '25-NOV-2022' , 120);
+INSERT INTO appointment VALUES (49, '25-NOV-2022', '27-NOV-2022' , 116);
+INSERT INTO appointment VALUES (50, '27-NOV-2022', '29-NOV-2022' , 104);
+
+REM *************************
+REM INSERT employee RECORDS
+REM *************************
+INSERT INTO employee VALUES (1001, 'Aland', 'Gilard', 'Male', '771 636 6324', 'Rledge', 'Kuala lumpur', 'Bandar Menjalara', 'Wilayah Persekutuan', 4856, 5000, 500);
+INSERT INTO employee VALUES (1002, 'Bereny', 'Matts', 'Male', '107 266 4693', 'Montana', 'Ipoh', 'Bendahara', 'Perak', 6534, 4800, 300);
+INSERT INTO employee VALUES (1003, 'Sisely', 'Leworthy', 'Female', '293 629 5550', 'Maryland', 'Klang', 'New City Centre', 'Selangor', 6774, 2300, 100);
+INSERT INTO employee VALUES (1004, 'Kelsy', 'Billows', 'Female', '300 171 1959', 'Di Loreto', 'Kuala Lumpur', 'Pahang', 'Wilayah Persekutuan', 8594, 2600, 100);
+INSERT INTO employee VALUES (1005, 'Stanford', 'Carrey', 'Male', '437 352 0670', 'Memorial', 'Ipoh', 'Bandar Raya', 'Perak', 9500, 5500, 500);
+INSERT INTO employee VALUES (1006, 'Chriss', 'Filoniere', 'Male', '800 473 0350', 'Warlington', 'Kuala lumpur', 'Ampang', 'Wilayah Persekutuan', 2734, 2100, 300);
+INSERT INTO employee VALUES (1007, 'Bereny', 'Mattew', 'Male', '107 266 4693', 'Montana', 'Ampang', 'NULL', 'Selangor', 4504, 4000, 500);
+INSERT INTO employee VALUES (1008, 'Ilsa', 'Decayette', 'Female', '869 624 6549', 'Bandar Sunway', 'Subang Jaya', 'NULL', 'Selangor', 5538, 4500, 300);
+INSERT INTO employee VALUES (1009, 'Carry', 'Mott', 'Female', '255 536 8820', 'Bandar Sunway', 'Subang Jaya', 'New City Centre ', 'Selangor', 9904, 2500, 500);
+INSERT INTO employee VALUES (1010, 'Mitzi', 'Dewicke', 'Female', '757 369 9041', 'Fremont', 'Klang', 'NULL', 'Selangor', 2234, 2300, 100);
+
+
+
+
+REM *********
+REM INSERT house RECORDS
+REM *********
+INSERT INTO house VALUES (1, 'CD', 'Jln 3/62A', 'Kuala lumpur', 'Bandar Menjalara', 'Wilayah Persekutuan', 52100, 1, 101);
+INSERT INTO house VALUES (2, 'CD', 'Jln 3/62A', 'Kuala lumpur', 'Bandar Menjalara', 'Wilayah Persekutuan', 52100, 1, 102);
+INSERT INTO house VALUES (3, 'BG', 'Lot 1A Jalan 12 ', 'Kuala lumpur', 'Kampung Cheras Baru', 'Wilayah Persekutuan', 56100, 4, 103);
+INSERT INTO house VALUES (4, 'AP', '85 Jln', 'Ipoh', 'Bendahara', 'Perak', 31650, 2, 104);
+INSERT INTO house VALUES (5, 'AP', '85 Jln', 'Ipoh', 'Bendahara', 'Perak', 31650, 2, 105);
+INSERT INTO house VALUES (6, 'SD', 'Block A 109 Jln Meru', 'Klang', 'New City Centre', ' Selangor', 41050, 3, 105);
+INSERT INTO house VALUES (7, 'SD', 'Block B 109 Jln Meru', 'Klang', 'New City Centre', ' Selangor', 41050, 3, 106);
+INSERT INTO house VALUES (8, 'SD', 'Block C 109 Jln Meru', 'Klang', 'New City Centre', ' Selangor', 41050, 3, 107);
+INSERT INTO house VALUES (9, 'AP', '257 Jln', 'Kuala Lumpur', 'Pahang', 'Wilayah Persekutuan', 53000, 2, 108);
+INSERT INTO house VALUES (10, 'BG', '258 Jln', 'Kuala Lumpur', 'Pahang', 'Wilayah Persekutuan', 53000, 4, 109);
+INSERT INTO house VALUES (11, 'AP', '257 Jln', 'Kuala Lumpur', 'Pahang', 'Wilayah Persekutuan', 53000, 2, 110);
+INSERT INTO house VALUES (12, 'CD', 'C 4 Mdn Istana 1', 'Ipoh', 'Bandar Raya', 'Perak', 53000, 1, 111);
+INSERT INTO house VALUES (13, 'CD', 'Jln 3/62C', 'Kuala lumpur', 'Bandar Menjalara', 'Wilayah Persekutuan', 52100, 1, 112);
+INSERT INTO house VALUES (14, 'AP', '332A', 'Kuala lumpur', 'Ampang', 'Wilayah Persekutuan', 52100, 2, 113);
+INSERT INTO house VALUES (15, 'BG', '33 Lorong Tenang Lima', 'Bukit Mertajamr', 'Taman Sri Tenang', 'Pulau Pinang',14000, 4, 114);
+INSERT INTO house VALUES (16, 'BG', '33 Lorong Tenang Lima', 'Bukit Mertajamr', 'Taman Sri Tenang', 'Pulau Pinang',14000, 4, 115);
+INSERT INTO house VALUES (17, 'AP', 'Lot 1A Jalan 12 ', 'Kuala lumpur', 'Kampung Cheras Baru', 'Wilayah Persekutuan', 56100, 2, 116);
+INSERT INTO house VALUES (18, 'CD', 'Jln 3/62A', 'Kuala lumpur', 'Bandar Menjalara', 'Wilayah Persekutuan', 52100, 1, 102);
+INSERT INTO house VALUES (19, 'CD', 'TAMAN SENTRAL', 'Kajang', 'Kabong Srw', 'Selangor', 52100, 1, 117);
+INSERT INTO house VALUES (20, 'AP', 'Batu 5', 'Klang', 'Lama', 'Selangor', 52100, 2, 118);
+INSERT INTO house VALUES (21, 'AP', 'Block A 109 Jln Meru', 'Klang', 'New City Centre', ' Selangor', 41050, 2, 119);
+INSERT INTO house VALUES (22, 'AP', 'Bandar Sunway', 'Subang Jaya', 'New City Centre', ' Selangor', 41050, 2, 120);
+INSERT INTO house VALUES (23, 'AP', 'Bandar Sunway', 'Subang Jaya', 'New City Centre', ' Selangor', 41050, 2, 120);
+
+
+REM *************************
+REM INSERT equipment RECORDS
+REM *************************
+INSERT INTO equipment VALUES (50, 'vacuum', 15 , 201 );
+INSERT INTO equipment VALUES (51, 'cloth', 150 , 202 );
+INSERT INTO equipment VALUES (52, 'bags', 150 , 203 );
+INSERT INTO equipment VALUES (53, 'dishwashing liquid', 40 , 204 );
+INSERT INTO equipment VALUES (54, 'bed covers', 40 , 205 );
+INSERT INTO equipment VALUES (55, 'detergent', 35 , 206 );
+INSERT INTO equipment VALUES (56, 'iron', 15 , 207 );
+INSERT INTO equipment VALUES (57, 'mops', 30 , 208 );
+INSERT INTO equipment VALUES (58, 'disinfectant', 15 , 209 );
+
+
+REM *************************
+REM INSERT service_details RECORDS
+REM *************************
+INSERT INTO service_details VALUES (1, 201, '1-SEP-2022', 1 ,1001 );
+INSERT INTO service_details VALUES (2, 202, '2-SEP-2022', 2 , 1002);
+INSERT INTO service_details VALUES (3, 203, '3-SEP-2022', 3 , 1003);
+INSERT INTO service_details VALUES (4, 204, '5-SEP-2022', 4 , 1004);
+INSERT INTO service_details VALUES (5, 205, '6-SEP-2022', 5 , 1005);
+INSERT INTO service_details VALUES (6, 206, '8-SEP-2022', 6 , 1006);
+INSERT INTO service_details VALUES (7, 207, '9-SEP-2022', 1 , 1007);
+INSERT INTO service_details VALUES (8, 208, '10-SEP-2022', 7 , 1008);
+INSERT INTO service_details VALUES (9, 201, '12-SEP-2022', 8 , 1009);
+INSERT INTO service_details VALUES (10, 209, '13-SEP-2022', 9 , 1010);
+INSERT INTO service_details VALUES (11, 201, '14-SEP-2022', 10 , 1001);
+INSERT INTO service_details VALUES (12, 204, '15-SEP-2022', 11 , 1002);
+INSERT INTO service_details VALUES (13, 206, '16-SEP-2022', 12 , 1003);
+INSERT INTO service_details VALUES (14, 208, '17-SEP-2022', 13 , 1004);
+INSERT INTO service_details VALUES (15, 207, '18-SEP-2022', 14 , 1005);
+INSERT INTO service_details VALUES (16, 201, '20-SEP-2022', 15 , 1006);
+INSERT INTO service_details VALUES (16, 202, '20-SEP-2022', 15, 1007);
+INSERT INTO service_details VALUES (17, 208, '21-SEP-2022', 16 , 1008);
+INSERT INTO service_details VALUES (18, 204, '22-SEP-2022', 17 , 1009);
+INSERT INTO service_details VALUES (19, 201, '23-SEP-2022', 18 , 1010);
+INSERT INTO service_details VALUES (20, 201, '24-SEP-2022', 19 , 1001);
+INSERT INTO service_details VALUES (21, 206, '25-SEP-2022', 20 , 1002);
+INSERT INTO service_details VALUES (22, 209, '27-SEP-2022', 21 , 1003);
+INSERT INTO service_details VALUES (23, 209, '29-SEP-2022', 22 , 1004);
+INSERT INTO service_details VALUES (24, 201, '30-SEP-2022', 23 , 1005);
+
+REM *************************
+REM INSERT employee_commissions RECORDS
+REM *************************
+INSERT INTO employee_commissions VALUES (1001, 7, 3500);
+INSERT INTO employee_commissions VALUES (1002, 11, 3300);
+INSERT INTO employee_commissions VALUES (1003, 8, 800);
+INSERT INTO employee_commissions VALUES (1004, 11, 1100);
+INSERT INTO employee_commissions VALUES (1005, 8, 4000);
+INSERT INTO employee_commissions VALUES (1006, 2, 600);
+INSERT INTO employee_commissions VALUES (1007, 5, 2500);
+INSERT INTO employee_commissions VALUES (1008, 10, 3000);
+INSERT INTO employee_commissions VALUES (1009, 2, 1000);
+INSERT INTO employee_commissions VALUES (1010, 8, 800);
+
+
+
+
+--  CREATING INDEXES: 
+
+--  1.) The customer table has been used in several queries since a customer is the most important entity in a house keeping service.
+--      The customer table can help the housekeeping to manage their relationships with their customers by storing detailed information
+--      about each customer, including their contact information. This information can be used to tailor marketing campaigns and sales 
+--      efforts to specific customers, as well as to provide personalized customer service. Therefore, it would be beneficial to index 
+--      this customerxx table to speed up any related queries. 
+
+CREATE INDEX customer_cust_id_ph_no_idx
+ON customerxx (cust_id, ph_no);
+
+
+
+-- 2.) Employee_details table has direct relationships with three tables,  the house, serivices_provided and employee tables. This table
+--     also has 24 rows which is  the highest number of rows in the database. Therefore, we must consider indexing for this employee_details
+--     table since it is large and has been frequently used to  run queries that filter or sort the data in the table.
+--     This can help maximize the related query's efficiency while searching the database.
+
+CREATE INDEX service_dets__servicedetid_dateofservice_idx
+ON service_details (service_det_id, date_of_service);
+
+
+
+-- CREATING VIEWS:
+
+-- 1.) We might want to create a view of the employee table to restrict access to sensitive data for the purpose of data security.
+--     For example, a view has been created that only displays certain information such as the employee names, their id’s and their
+--     phone numbers, solely for contact purposes while hiding other information such as their address, salary and commission information.
+DROP VIEW employee_info_public_use;
+
+CREATE VIEW employee_info_public_use AS
+SELECT emp_id, f_name, l_name, ph_no
+FROM employee
+ORDER BY f_name;
+
+-- 2.) This  view  provides a summarized view of data from multiple tables like services_provided and equipment table,
+--     to create a general table about services and can be used to quickly find key information or trends while creating 
+--     different queries in  the database.
+DROP VIEW services_general_table;
+
+CREATE VIEW services_general_table AS
+SELECT s.service_id, s.service_name, e.eqp_id, e.eqp_name, e.quantity
+FROM services_provided s,equipment e
+WHERE s.service_id=e.service_id
+ORDER BY s.service_id;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
